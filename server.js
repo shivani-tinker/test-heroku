@@ -14,32 +14,32 @@ app.post('/update', function(req, res) {
         // watch for any connect issues
         if (err) console.log(err);
 		const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-		if(emailRegexp.test(LOWER($1))){
+		if(emailRegexp.test(LOWER($4))){
 			conn.query(
-				'UPDATE salesforce.Contact SET Email = $1 WHERE LOWER(FirstName) = LOWER($2) AND LOWER(LastName) = LOWER($3) AND Phone = $4',
-				[req.body.email.trim(), req.body.firstName.trim(), req.body.lastName.trim(), req.body.phone.trim()],
-				function(err, result) {
-					if (err != null || result.rowCount == 0) {
-					  conn.query('INSERT INTO salesforce.Contact (Email, FirstName, LastName, Phone) VALUES ($1, $2, $3, $4)',
-					  [req.body.email.trim(),req.body.firstName.trim(), req.body.lastName.trim(), req.body.phone.trim()],
-					  function(err, result) {
-						done();
-						if (err) {
-							res.status(400).json({error: err.message});
-						}
-						else {
-							// this will still cause jquery to display 'Record updated!'
-							// eventhough it was inserted
-							res.json(result);
-						}
-					  });
-					}
-					else {
-						done();
-						res.json(result);
-					}
-				}
-			);
+            'UPDATE salesforce.Contact SET Email =$4 WHERE LOWER(FirstName) = LOWER($2) AND LOWER(LastName) = LOWER($3)',
+            [req.body.phone.trim(), req.body.firstName.trim(), req.body.lastName.trim(), req.body.email.trim()],
+            function(err, result) {
+                if (err != null || result.rowCount == 0) {
+                  conn.query('INSERT INTO salesforce.Contact (Phone, MobilePhone, FirstName, LastName, Email) VALUES ($1, $2, $3, $4, $5)',
+                  [req.body.phone.trim(), req.body.phone.trim(), req.body.firstName.trim(), req.body.lastName.trim(), req.body.email.trim()],
+                  function(err, result) {
+                    done();
+                    if (err) {
+                        res.status(400).json({error: err.message});
+                    }
+                    else {
+                        // this will still cause jquery to display 'Record updated!'
+                        // eventhough it was inserted
+                        res.json(result);
+                    }
+                  });
+                }
+                else {
+                    done();
+                    res.json(result);
+                }
+            }
+        );
 		}
     });
 });
