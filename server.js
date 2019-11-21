@@ -14,8 +14,7 @@ app.post('/update', function(req, res) {
         // watch for any connect issues
         if (err) console.log(err);
 		const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-		console.log(emailRegexp.test(LOWER($4)));
-		if(emailRegexp.test(LOWER($4))){
+		if(emailRegexp.test(LOWER($1))){
 			conn.query(
 				'UPDATE salesforce.Contact SET Email = $1 WHERE LOWER(FirstName) = LOWER($2) AND LOWER(LastName) = LOWER($3) AND Phone = $4',
 				[req.body.email.trim(), req.body.firstName.trim(), req.body.lastName.trim(), req.body.phone.trim()],
