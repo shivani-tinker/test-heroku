@@ -12,7 +12,7 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 
 app.post('/update', function(req, res) {
-	if(emailRegexp.test(LOWER($4)) {
+	if(emailRegexp.test(LOWER($4))) {
 		pg.connect(process.env.DATABASE_URL, function (err, conn, done) {
 			// watch for any connect issues
 			if (err) console.log(err);
@@ -22,8 +22,7 @@ app.post('/update', function(req, res) {
 				[req.body.phone.trim(), req.body.firstName.trim(), req.body.lastName.trim(), req.body.email.trim()],
 				function(err, result) {
 					if (err != null || result.rowCount == 0) {
-					  conn.query('INSERT INTO salesforce.Contact (Phone, MobilePhone, FirstName, LastName, Email) VALUES ($1, $2, $3, $4, $5)',
-					  [req.body.phone.trim(), req.body.phone.trim(), req.body.firstName.trim(), req.body.lastName.trim(), req.body.email.trim()],
+					  conn.query('INSERT INTO salesforce.Contact (Phone, MobilePhone, FirstName, LastName, Email) VALUES ($1, $2, $3, $4, $5)', [req.body.phone.trim(), req.body.phone.trim(), req.body.firstName.trim(), req.body.lastName.trim(), req.body.email.trim()],
 					  function(err, result) {
 						done();
 						if (err) {
@@ -44,6 +43,7 @@ app.post('/update', function(req, res) {
 			);
 		});
 	}
+
 });
 
 app.listen(app.get('port'), function () {
